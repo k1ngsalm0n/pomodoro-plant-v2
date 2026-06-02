@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database');
-const authToken = require('../middleware/auth/');
+const authToken = require('../middleware/auth');
 
 router.get('/', authToken, (req, res) => {
     const userId = req.user.id;
@@ -13,4 +13,4 @@ router.get('/', authToken, (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports = router

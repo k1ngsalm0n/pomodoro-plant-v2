@@ -73,3 +73,5 @@ router.post('/complete', authToken, (req, res) => {
         }
     })
 })
+
+module.exports = router

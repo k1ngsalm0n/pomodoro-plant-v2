@@ -36,6 +36,10 @@ router.post('/login', (req, res) => {
             return res.status(400).json({ error: 'Database error' })
         }
 
+        if ( !user ) {
+            return res.status(400).json({ error: 'Invalid username or password' })
+        }
+
         const match = bcrypt.compareSync(password, user.password)
         if ( !match ) {
             return res.status(400).json({ error: 'Invalid username or password' })
