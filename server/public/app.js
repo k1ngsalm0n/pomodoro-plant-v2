@@ -22,6 +22,11 @@ const registerUsername = document.getElementById('register-username')
 const registerPassword = document.getElementById('register-password')
 const registerBtn = document.getElementById('register-btn')
 
+const beginBtn = document.getElementById('begin-btn')
+const studyBtn = document.getElementById('study-btn')
+const collectionBtn = document.getElementById('collection-btn')
+const backBtn = document.getElementById('back-btn')
+
 document.getElementById('go-register').addEventListener('click', () => {
     showScreen('register')
 })
@@ -84,4 +89,20 @@ loginBtn.addEventListener('click', () => {
             showScreen('welcome')
         }
     })
+})
+
+beginBtn.addEventListener('click', () => {
+    showScreen('menu')
+})
+
+studyBtn.addEventListener('click', () => {
+    showScreen('timer')
+})
+
+collectionBtn.addEventListener('click', () => {
+    showScreen('collection')
+})
+
+backBtn.addEventListener('click', () => {
+    showScreen('menu')
 })
