@@ -21,7 +21,7 @@ router.post('/complete', authToken, (req, res) => {
             if (err) {
                 return res.status(500).json({ error: 'Database error' })
             }
-            res.json({ message: 'Plant completed and new plant started' })
+            res.json({ message: 'Plant completed' })
         })
     }
     db.get('SELECT flower_id, stage FROM plant WHERE user_id = ?', [userId], (err, plant) => {
