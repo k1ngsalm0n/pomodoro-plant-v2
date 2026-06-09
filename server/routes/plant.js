@@ -37,11 +37,6 @@ router.post('/complete', authToken, (req, res) => {
             resetPlant()
         } else {
             const stage = plant.stage + 1
-            db.run('UPDATE plant SET stage = ? WHERE user_id = ?', [stage, userId], function(err) {
-                if (err) {
-                    return res.status(500).json({ error: 'Database error' })
-                }
-            })
             if (stage === 4) {
                 db.get('SELECT id, count FROM collection WHERE user_id = ? AND flower_id = ?', [userId, plant.flower_id], function(err, existing) {
                     if (err) {
@@ -52,15 +47,16 @@ router.post('/complete', authToken, (req, res) => {
                             if (err) {
                                 return res.status(500).json({ error: 'Database error' })
                             }
+                            resetPlant()
                         })
                     } else {
                         db.run('INSERT INTO collection (user_id, flower_id) VALUES (?, ?)', [userId,plant.flower_id], function(err) {
                             if (err) {
                                 return res.status(500).json({ error: 'Database error' })
                             }
+                            resetPlant()
                         })
                     }
-                    resetPlant()
                 })
             } else {
                 db.run('UPDATE plant SET stage = ? WHERE user_id = ?', [stage, userId], function(err) {
