@@ -45,6 +45,16 @@ backBtn.addEventListener('click', () => {
     showScreen('menu')
 })
 
+if ( window.electronAPI ) {
+    document.getElementById('close-btn').addEventListener('click', () => {
+        window.electronAPI.closeWindow()
+    })
+
+    document.getElementById('minimize-btn').addEventListener('click', () => {
+        window.electronAPI.minimizeWindow()
+    })
+}
+
 function getPlantEmoji(stage) {
     const emojis = ['🌱', '🌿', '☘️', '🌺', '🌸']
     return emojis[stage]
