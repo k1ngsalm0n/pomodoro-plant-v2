@@ -19,6 +19,7 @@ db.serialize(() => {
         user_id INTEGER PRIMARY KEY,
         flower_id INTEGER NOT NULL,
         stage INTEGER DEFAULT 0,
+        session_count INTEGER DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users(id) )
         `);
 

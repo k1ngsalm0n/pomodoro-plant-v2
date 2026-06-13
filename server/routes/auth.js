@@ -20,6 +20,10 @@ router.post('/register', (req, res) => {
                 if (err) {
                     return res.status(500).json({ error: 'Database error' })
                 }
+                const flowerId = Math.floor(Math.random() * 30) + 1
+                db.run('INSERT INTO plant (user_id, flower_id, stage, session_count) VALUES (?, ?, 0, 0)',
+                    [this.lastID, flowerId])
+                    
                 res.status(201).json({ message: 'User created successfully' })
             })
         })

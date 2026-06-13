@@ -1,7 +1,8 @@
-
 let timerInterval = null
-let secondsLeft = 1500
+let secondsLeft = 5
 let isRunning = false
+let sessionCount = 0
+let isBreak = false
 
 const startBtn = document.getElementById('start-btn')
 
@@ -19,19 +20,70 @@ function startTimer() {
         if ( secondsLeft === 0 ) {
             clearInterval(timerInterval)
             isRunning = false
-            completeSession()
+            if ( isBreak ) {
+                isBreak = false
+                secondsLeft = 4
+                document.getElementById('session-label').textContent = 'Study Session' + sessionCount
+                document.getElementById('timer-display').textContent = formatTime(secondsLeft)
+                startTimer()
+                completeSession()
+            } else {
+                sessionCount++
+                if ( sessionCount % 4 === 0 ) {
+                    secondsLeft = 3
+                    document.getElementById('session-label').textContent = 'Long Break'
+                } else {
+                    secondsLeft = 2
+                    document.getElementById('session-label').textContent = 'Short Break'
+                }
+
+                isBreak = true
+                document.getElementById('timer-display').textContent = formatTime(secondsLeft)
+                startBtn.textContent = 'Pause'
+                startTimer()
+            }
         }
     }, 1000)
 }
 
-function getPlantEmoji(stage) {
-    const emojis = ['🌱', '🌿', '☘️', '🌺', '🌸']
-    return emojis[stage]
-}
+function loadPlant() {
+    fetch('/api/plant', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
 
+        if ( data.session_count > 0 ) {
+            const continueSession = confirm(`You were on plant growth ${data.stage + 1} of 4. \nContinue?`)
+            if ( continueSession ) {
+                sessionCount = data.session_count
+            } else {
+                sessionCount = 0
+                resetSession()
+            }
+        }
+    })
+}
+function resetSession() {
+    fetch('/api/plant/reset', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
+    })
+}
 function completeSession() {
     fetch('/api/plant/complete', {
         method: 'POST',
+        body: JSON.stringify({ sessionCount }),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -44,7 +96,7 @@ function completeSession() {
             alert(data.error)
         } else {
             if (data.message === 'Plant completed') {
-                alert('Plant fully grown! Added to the collection!')
+                loadPlant()
             } else {
                 document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
             }

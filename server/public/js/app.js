@@ -33,6 +33,8 @@ beginBtn.addEventListener('click', () => {
 
 studyBtn.addEventListener('click', () => {
     showScreen('timer')
+    document.getElementById('timer-display').textContent = formatTime(secondsLeft)
+    loadPlant()
 })
 
 collectionBtn.addEventListener('click', () => {
@@ -42,3 +44,8 @@ collectionBtn.addEventListener('click', () => {
 backBtn.addEventListener('click', () => {
     showScreen('menu')
 })
+
+function getPlantEmoji(stage) {
+    const emojis = ['🌱', '🌿', '☘️', '🌺', '🌸']
+    return emojis[stage]
+}
