@@ -56,6 +56,7 @@ loginBtn.addEventListener('click', () => {
         } else {
             token = data.token
             currentUser = JSON.parse(atob(token.split('.')[1]))
+            localStorage.setItem('token', token)
             document.getElementById('welcome-username').textContent = currentUser.username
             alert('Login successfully!')
             showScreen('welcome')

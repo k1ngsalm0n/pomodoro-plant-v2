@@ -4,7 +4,14 @@ let currentUser = null
 const beginBtn = document.getElementById('begin-btn')
 const studyBtn = document.getElementById('study-btn')
 const collectionBtn = document.getElementById('collection-btn')
-const backBtn = document.getElementById('back-btn')
+
+const previousScreen = {
+    register: 'login',
+    welcome: 'login',
+    menu: 'welcome',
+    timer: 'menu',
+    collection: 'menu'
+}
 
 const screens = {
     login: document.getElementById('login-screen'),
@@ -18,7 +25,33 @@ const screens = {
 function showScreen(screenName) {
     Object.values(screens).forEach(screen => screen.classList.add('hidden'))
     screens[screenName].classList.remove('hidden')
+    localStorage.setItem('currentScreen', screenName)
 }
+
+function goBack( currentScreen ) {
+    showScreen(previousScreen[currentScreen])
+}
+
+const savedToken = localStorage.getItem('token')
+if (savedToken) {
+    token = savedToken
+    currentUser = JSON.parse(atob(token.split('.')[1]))
+    document.getElementById('welcome-username').textContent = currentUser.username
+    
+    const savedScreen = localStorage.getItem('currentScreen') || 'welcome'
+    if( savedScreen === 'timer') {
+        loadPlant()
+    } else if (savedScreen === 'collection') {
+        loadCollection()
+    }
+    showScreen(savedScreen)
+}
+
+document.querySelectorAll('.back-btn-nav').forEach(btn => {
+    btn.addEventListener('click', () => {
+        goBack(btn.dataset.screen)
+    })
+})
 
 document.getElementById('go-register').addEventListener('click', () => {
     showScreen('register')
@@ -39,10 +72,7 @@ studyBtn.addEventListener('click', () => {
 
 collectionBtn.addEventListener('click', () => {
     showScreen('collection')
-})
-
-backBtn.addEventListener('click', () => {
-    showScreen('menu')
+    loadCollection()
 })
 
 if ( window.electronAPI ) {

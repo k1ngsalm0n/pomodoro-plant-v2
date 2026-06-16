@@ -67,6 +67,7 @@ function loadPlant() {
         }
     })
 }
+
 function resetSession() {
     fetch('/api/plant/reset', {
         method: 'POST',
@@ -80,6 +81,7 @@ function resetSession() {
         document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
     })
 }
+
 function completeSession() {
     fetch('/api/plant/complete', {
         method: 'POST',

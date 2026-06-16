@@ -6,6 +6,7 @@ function loadCollection() {
     })
     .then(res => res.json())
     .then(data => {
+        console.log('collection data:', data)
         if(data.error) {
             alert(data.error)
         } else {
@@ -24,8 +25,3 @@ function loadCollection() {
         }
     })
 }
-
-collectionBtn.addEventListener('click', () => {
-    showScreen('collection')
-    loadCollection()
-})
