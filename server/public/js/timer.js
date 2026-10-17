@@ -19,6 +19,10 @@ function formatTime(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
 }
 
+function showSessionLabel() {
+    document.getElementById('session-label').textContent = 'Study Session ' + (sessionCount + 1)
+}
+
 function startTimer() {
     isRunning = true
     timerInterval = setInterval(() => {
@@ -30,7 +34,7 @@ function startTimer() {
             if ( isBreak ) {
                 isBreak = false
                 secondsLeft = STUDY_SECONDS
-                document.getElementById('session-label').textContent = 'Study Session ' + sessionCount
+                showSessionLabel()
                 document.getElementById('timer-display').textContent = formatTime(secondsLeft)
                 startTimer()
                 completeSession()
@@ -72,6 +76,8 @@ function loadPlant() {
                 resetSession()
             }
         }
+
+        showSessionLabel()
     })
 }
 
