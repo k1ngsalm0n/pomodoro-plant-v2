@@ -1,5 +1,12 @@
+// Session lengths in seconds. These were 5 / 2 / 3 while the cycle logic was
+// being written, so a whole four-session round could be watched in under a
+// minute; they are the real pomodoro lengths now.
+const STUDY_SECONDS = 25 * 60
+const SHORT_BREAK_SECONDS = 5 * 60
+const LONG_BREAK_SECONDS = 15 * 60
+
 let timerInterval = null
-let secondsLeft = 5
+let secondsLeft = STUDY_SECONDS
 let isRunning = false
 let sessionCount = 0
 let isBreak = false
@@ -22,7 +29,7 @@ function startTimer() {
             isRunning = false
             if ( isBreak ) {
                 isBreak = false
-                secondsLeft = 4
+                secondsLeft = STUDY_SECONDS
                 document.getElementById('session-label').textContent = 'Study Session' + sessionCount
                 document.getElementById('timer-display').textContent = formatTime(secondsLeft)
                 startTimer()
@@ -30,10 +37,10 @@ function startTimer() {
             } else {
                 sessionCount++
                 if ( sessionCount % 4 === 0 ) {
-                    secondsLeft = 3
+                    secondsLeft = LONG_BREAK_SECONDS
                     document.getElementById('session-label').textContent = 'Long Break'
                 } else {
-                    secondsLeft = 2
+                    secondsLeft = SHORT_BREAK_SECONDS
                     document.getElementById('session-label').textContent = 'Short Break'
                 }
 
