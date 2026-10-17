@@ -1,10 +1,5 @@
 function loadCollection() {
-    fetch('/api/collection', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(res => res.json())
+    authFetch('/api/collection')
     .then(data => {
         console.log('collection data:', data)
         if(data.error) {

@@ -58,12 +58,7 @@ function startTimer() {
 }
 
 function loadPlant() {
-    fetch('/api/plant', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(res => res.json())
+    authFetch('/api/plant')
     .then(data => {
         document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
 
@@ -82,30 +77,18 @@ function loadPlant() {
 }
 
 function resetSession() {
-    fetch('/api/plant/reset', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-
-    .then(res => res.json())
+    authFetch('/api/plant/reset', { method: 'POST' })
     .then(data => {
         document.getElementById('plant-image').textContent = getPlantEmoji(data.stage)
     })
 }
 
 function completeSession() {
-    fetch('/api/plant/complete', {
+    authFetch('/api/plant/complete', {
         method: 'POST',
         body: JSON.stringify({ sessionCount }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Content-Type': 'application/json' }
     })
-
-    .then(res => res.json())
     .then(data => {
         if ( data.error ) {
             alert(data.error)
