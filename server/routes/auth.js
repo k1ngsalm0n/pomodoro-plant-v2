@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const db = require('../database')
+const { JWT_SECRET } = require('../config')
 
 router.post('/register', (req, res) => {
     const { username, password } = req.body
@@ -54,7 +55,7 @@ router.post('/login', (req, res) => {
                 id: user.id, 
                 username: user.username
             },
-            'your_secret_key',
+            JWT_SECRET,
             { expiresIn: '30d' }
         )
         res.json({ token })
